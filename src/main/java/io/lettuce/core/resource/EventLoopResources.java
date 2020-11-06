@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.util.concurrent.EventExecutorGroup;
 
 /**
@@ -57,6 +58,11 @@ public interface EventLoopResources {
      * @return the {@link Channel} class.
      */
     Class<? extends Channel> socketChannelClass();
+
+    /**
+     * @return the {@link DatagramChannel} class.
+     */
+    Class<? extends DatagramChannel> datagramChannelClass();
 
     /**
      * @return the {@link EventLoopGroup} class.

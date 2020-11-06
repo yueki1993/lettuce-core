@@ -22,9 +22,11 @@ import io.lettuce.core.internal.LettuceAssert;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollDatagramChannel;
 import io.netty.channel.epoll.EpollDomainSocketChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.unix.DomainSocketAddress;
 import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.internal.SystemPropertyUtil;
@@ -153,6 +155,14 @@ public class EpollProvider {
             return null;
         }
 
+        @Override
+        public Class<? extends DatagramChannel> datagramChannelClass() {
+
+            checkForEpollLibrary();
+            return null;
+        }
+
+
     }
 
     /**
@@ -193,6 +203,15 @@ public class EpollProvider {
 
             return EpollSocketChannel.class;
         }
+
+        @Override
+        public Class<? extends DatagramChannel> datagramChannelClass() {
+
+            checkForEpollLibrary();
+
+            return EpollDatagramChannel.class;
+        }
+
 
         @Override
         public Class<? extends EventLoopGroup> eventLoopGroupClass() {

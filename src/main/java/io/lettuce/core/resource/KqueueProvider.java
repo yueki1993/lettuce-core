@@ -25,6 +25,8 @@ import io.netty.channel.kqueue.KQueue;
 import io.netty.channel.kqueue.KQueueDomainSocketChannel;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.kqueue.KQueueSocketChannel;
+import io.netty.channel.kqueue.KQueueDatagramChannel;
+import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.unix.DomainSocketAddress;
 import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.internal.SystemPropertyUtil;
@@ -153,6 +155,15 @@ public class KqueueProvider {
             return null;
         }
 
+        @Override
+        public Class<? extends DatagramChannel> datagramChannelClass() {
+
+
+            checkForKqueueLibrary();
+            return null;
+        }
+
+
     }
 
     /**
@@ -193,6 +204,15 @@ public class KqueueProvider {
 
             return KQueueSocketChannel.class;
         }
+
+        @Override
+        public Class<? extends DatagramChannel> datagramChannelClass() {
+
+            checkForKqueueLibrary();
+
+            return KQueueDatagramChannel.class;
+        }
+
 
         @Override
         public Class<? extends EventLoopGroup> eventLoopGroupClass() {
