@@ -215,6 +215,15 @@ public class DefaultEventLoopGroupProvider implements EventLoopGroupProvider {
             return new NioEventLoopGroup(numberOfThreads, factoryProvider.getThreadFactory("lettuce-nioEventLoop"));
         }
 
+        if (IOUringProvider.isAvailable()) {
+
+            EventLoopResources resources = IOUringProvider.getResources();
+
+            if (resources.matches(type)) {
+                return resources.newEventLoopGroup(numberOfThreads, factoryProvider.getThreadFactory("lettuce-io_uringEventLoop"));
+            }
+        }
+
         if (EpollProvider.isAvailable()) {
 
             EventLoopResources resources = EpollProvider.getResources();

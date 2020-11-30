@@ -18,6 +18,7 @@ package io.lettuce.core;
 import io.lettuce.core.internal.LettuceAssert;
 import io.lettuce.core.resource.EpollProvider;
 import io.lettuce.core.resource.EventLoopResources;
+import io.lettuce.core.resource.IOUringProvider;
 import io.lettuce.core.resource.KqueueProvider;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -62,14 +63,14 @@ class Transports {
      */
     static class NativeTransports {
 
-        static EventLoopResources RESOURCES = KqueueProvider.isAvailable() ? KqueueProvider.getResources()
-                : EpollProvider.getResources();
+        static EventLoopResources RESOURCES = IOUringProvider.isAvailable() ? IOUringProvider.getResources():
+            KqueueProvider.isAvailable() ? KqueueProvider.getResources() : EpollProvider.getResources();
 
         /**
          * @return {@code true} if a native transport is available.
          */
         static boolean isSocketSupported() {
-            return EpollProvider.isAvailable() || KqueueProvider.isAvailable();
+            return EpollProvider.isAvailable() || KqueueProvider.isAvailable() || IOUringProvider.isAvailable();
         }
 
         /**
